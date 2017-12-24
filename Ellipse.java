@@ -14,6 +14,19 @@ public class Ellipse extends Shape{
 	public int getID() {
 		return this.ID;
 	}
+	public Point[] getAllPoints(){
+		return this.focus;
+	}
+	public void moveAllPoints(double x_coordinate, double y_coordinate){
+		Point[] all_points = getAllPoints();
+		int i=0;
+		double x_value, y_value;
+		for(i=0; i<all_points.length; i++){
+			x_value = all_points[i].getX();
+			y_value = all_points[i].getY();
+			all_points[i].setPoint(x_value + x_coordinate, y_value + y_coordinate);
+		}
+	}
 	public double getArea() {
 		double focus_length_from_center = focus[0].getDistanceBetweenTwoPoints(focus[1])/2;
 		double axis_remainder = this.distance/2;

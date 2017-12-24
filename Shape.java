@@ -3,6 +3,8 @@ public abstract class Shape {
 	protected static int object_counter = 0;
 	protected int ID = 0;
 	protected Color color;
+	protected abstract Point[] getAllPoints();
+	protected abstract void moveAllPoints(double x_coordinate, double y_coordinate);
 	protected abstract double getArea();
 	protected abstract double getCircumference();
 	protected Shape(Color color){

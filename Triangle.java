@@ -1,3 +1,4 @@
+//import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 public class Triangle extends Shape{
 	private double first_edge_length;
@@ -18,12 +19,25 @@ public class Triangle extends Shape{
 		second_edge_length = vertex[0].getDistanceBetweenTwoPoints(vertex[2]);
 		third_edge_length = vertex[1].getDistanceBetweenTwoPoints(vertex[2]);
 	}
-	public double getCircumference() {
-		return first_edge_length + second_edge_length + third_edge_length;
+	public Point[] getAllPoints(){
+		return this.vertex;
+	}
+	public void moveAllPoints(double x_coordinate, double y_coordinate){
+		Point[] all_points = getAllPoints();
+		int i=0;
+		double x_value, y_value;
+		for(i=0; i<all_points.length; i++){
+			x_value = all_points[i].getX();
+			y_value = all_points[i].getY();
+			all_points[i].setPoint(x_value + x_coordinate, y_value + y_coordinate);
+		}
 	}
 	public double getArea() {
 		// Heron's formula
 		double s = (first_edge_length + second_edge_length + third_edge_length)/2;
 		return Math.sqrt(s * (s - first_edge_length) * (s - second_edge_length) * (s - third_edge_length));
+	}
+	public double getCircumference() {
+		return first_edge_length + second_edge_length + third_edge_length;
 	}
 }
