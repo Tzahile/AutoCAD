@@ -41,6 +41,7 @@ public class Main {
 					CircumferenceCommand(Color.valueOf(parsed_line[1]), shapes_hash_table);
 					break;
 				case "is_inside":
+					isInsideCommand(parsed_line, shapes_hash_table);		
 					break;
 				case "exit":
 					scan.close();
@@ -126,6 +127,13 @@ public class Main {
 			}
 		}
 		System.out.println(String.format("%.2f", total_area));
+	}
+	public static void isInsideCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table) {
+		int ID = Integer.parseInt(parsed_line[1]);
+		double x_coordinate = Double.parseDouble(parsed_line[2]);
+		double y_coordinate = Double.parseDouble(parsed_line[3]);
+		Shape current_shape = shapes_hash_table.get(ID);
+		System.out.println(current_shape.isInside(x_coordinate, y_coordinate));
 	}
 	private static void ColorCommand(int ID, Color color, HashMap < Integer, Shape > shapes_hash_table) {
 		Shape required_shape;

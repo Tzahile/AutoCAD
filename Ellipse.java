@@ -17,6 +17,9 @@ public class Ellipse extends Shape{
 	public Point[] getAllPoints(){
 		return this.focus;
 	}
+	public double getDistance(){
+		return this.distance;
+	}
 	public void moveAllPoints(double x_coordinate, double y_coordinate){
 		Point[] all_points = getAllPoints();
 		int i=0;
@@ -57,5 +60,12 @@ public class Ellipse extends Shape{
 	private int factorial(int number) {
 		if(number == 0) return 1;
 		return factorial(number-1);
+	}
+	public int isInside(double x_coordinate, double y_coordinate){
+		Point checked_point = new Point(x_coordinate, y_coordinate);
+		Point[] focus_points = getAllPoints();
+		double distance_from_focuses = checked_point.getDistanceBetweenTwoPoints(focus_points[0]) + checked_point.getDistanceBetweenTwoPoints(focus_points[1]);
+		if (distance_from_focuses <= getDistance()) return 1;
+		return 0;
 	}
 }

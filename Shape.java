@@ -7,6 +7,7 @@ public abstract class Shape {
 	protected abstract void moveAllPoints(double x_coordinate, double y_coordinate);
 	protected abstract double getArea();
 	protected abstract double getCircumference();
+	protected abstract int isInside(double x_coordinate, double y_coordinate);
 	protected Shape(Color color){
 		this.color = color;
 	}

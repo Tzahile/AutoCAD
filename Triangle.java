@@ -1,5 +1,6 @@
 
 public class Triangle extends Shape{
+	private static final double EPSILON = 0.05;
 	private double first_edge_length;
 	private double second_edge_length;
 	private double third_edge_length;
@@ -38,5 +39,25 @@ public class Triangle extends Shape{
 	}
 	public double getCircumference() {
 		return first_edge_length + second_edge_length + third_edge_length;
+	}
+	public int isInside(double x_coordinate, double y_coordinate){
+		Point checked_point = new Point(x_coordinate, y_coordinate);
+		Point[] all_points = getAllPoints();
+		double first_sub_area_with_checked_point = triangleArea(all_points[0], all_points[1], checked_point);
+		double second_sub_area_with_checked_point = triangleArea(all_points[0], checked_point, all_points[2]);
+		double third_sub_area_with_checked_point = triangleArea(checked_point, all_points[1], all_points[2]);
+		double area_sum_with_checked_point = first_sub_area_with_checked_point + second_sub_area_with_checked_point + third_sub_area_with_checked_point;
+		if(area_sum_with_checked_point >= getArea()-EPSILON && area_sum_with_checked_point <= getArea() + EPSILON) return 1;
+		return 0;
+	}
+
+	public static double triangleArea(Point first_point, Point second_point, Point third_point) {
+		double first_second_distance = first_point.getDistanceBetweenTwoPoints(second_point);
+		double first_third_distance = first_point.getDistanceBetweenTwoPoints(third_point);
+		double second_third_distance = second_point.getDistanceBetweenTwoPoints(third_point);
+		
+		// Heron's formula
+		double s = (first_second_distance + first_third_distance + second_third_distance)/2;
+		return Math.sqrt(s * (s - first_second_distance) * (s - first_third_distance) * (s - second_third_distance));
 	}
 }

@@ -57,4 +57,48 @@ public class Parallelogram extends Shape {
 	public int getID() {
 		return this.ID;
 	}
+	public int isInside(double x_coordinate, double y_coordinate){
+		Point checked_point = new Point(x_coordinate, y_coordinate);
+		Point[] all_vertices = getAllPoints();
+		double max_x = max_or_min_value(all_vertices[0].getX(), 
+								 		 all_vertices[1].getX(),
+								 		 all_vertices[2].getX(),
+										 all_vertices[3].getX(),
+										 true);
+		double min_x = max_or_min_value(all_vertices[0].getX(), 
+								 		all_vertices[1].getX(),
+								 		all_vertices[2].getX(),
+								 		all_vertices[3].getX(),
+										 false);
+		double max_y = max_or_min_value(all_vertices[0].getY(), 
+								 		 all_vertices[1].getY(),
+								 		 all_vertices[2].getY(),
+										 all_vertices[3].getY(),
+										 true);
+		double min_y = max_or_min_value(all_vertices[0].getY(), 
+								 		all_vertices[1].getY(),
+								 		all_vertices[2].getY(),
+								 		all_vertices[3].getY(),
+										 false);
+		if(min_x <= checked_point.getX() && checked_point.getX() <= max_x &&
+		   min_y <= checked_point.getY() && checked_point.getY() <= max_y){
+				return 1;
+		}
+		return 0;
+	}
+
+	public double max_or_min_value(double first, double second, double third, double fourth, boolean isMax){
+		double first_second_relation;
+		double third_fourth_relation;
+		if(isMax){
+			first_second_relation = Math.max(first, second);
+			third_fourth_relation = Math.max(third, fourth);
+			return Math.max(first_second_relation, third_fourth_relation);
+		}
+		else{
+			first_second_relation = Math.min(first, second);
+			third_fourth_relation = Math.min(third, fourth);
+			return Math.min(first_second_relation, third_fourth_relation);
+		}
+	}
 }
