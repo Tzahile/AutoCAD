@@ -1,4 +1,3 @@
-//import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 public class Parallelogram extends Shape {
 	protected double first_edge_length;

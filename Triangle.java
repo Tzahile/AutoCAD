@@ -1,4 +1,3 @@
-//import com.sun.javafx.scene.paint.GradientUtils.Point;
 
 public class Triangle extends Shape{
 	private double first_edge_length;
