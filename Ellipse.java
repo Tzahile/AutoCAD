@@ -1,7 +1,7 @@
 public class Ellipse extends Shape {
 	final int NUM_OF_ITERATIONS = 100;
 	protected Point[] focus = new Point[2];
-	double distance = 0;
+	protected double distance = 0;
 
 	public Ellipse(Color color, double x1, double y1, double x2, double y2, double distance) {
 		super(color);
@@ -18,15 +18,20 @@ public class Ellipse extends Shape {
 	public double getDistance() {
 		return this.distance;
 	}
-	public void moveAllPoints(double x_coordinate, double y_coordinate) {
+	public void Move(double x_offset, double y_offset) {
 		Point[] all_points = getAllPoints();
 		int i = 0;
 		double x_value, y_value;
 		for (i = 0; i < all_points.length; i++) {
 			x_value = all_points[i].getX();
 			y_value = all_points[i].getY();
-			all_points[i].setPoint(x_value + x_coordinate, y_value + y_coordinate);
+			focus[i].setPoint(x_value + x_offset, y_value + y_offset);
 		}
+	}
+	public Ellipse Clone() {
+		Ellipse clone = new Ellipse(color, focus[0].getX(), focus[0].getY(), focus[1].getX(), focus[1].getY(),
+				distance);
+		return clone;
 	}
 	public double getArea() {
 		double focus_length_from_center = focus[0].distanceTo(focus[1]) / 2;
@@ -59,11 +64,14 @@ public class Ellipse extends Shape {
 		if (number == 0) return 1;
 		return factorial(number - 1);
 	}
-	public int isPointInside(double x_coordinate, double y_coordinate) {
+	public boolean isPointInside(double x_coordinate, double y_coordinate) {
 		Point checked_point = new Point(x_coordinate, y_coordinate);
 		Point[] focus_points = getAllPoints();
-		double distance_from_focuses = checked_point.distanceTo(focus_points[0]) + checked_point.distanceTo(focus_points[1]);
-		if (distance_from_focuses <= getDistance()) return 1;
-		return 0;
+		double distance_from_focuses = checked_point.distanceTo(focus_points[0]) + 
+				checked_point.distanceTo(focus_points[1]);
+		if (distance_from_focuses <= getDistance()) {
+			return true;
+		}
+		return false;
 	}
 }

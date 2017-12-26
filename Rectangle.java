@@ -4,4 +4,8 @@ public class Rectangle extends Parallelogram {
 		CalculateRemainingVertex();
 		CalculateEdgesLength();
 	}
+	public Rectangle Clone() {
+		Rectangle clone = new Rectangle(color, vertex[0].getX(), vertex[0].getY(), vertex[2].getX(), vertex[2].getY());
+		return clone;
+	}
 }

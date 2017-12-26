@@ -19,15 +19,20 @@ public class Triangle extends Shape {
 	public Point[] getAllPoints() {
 		return this.vertex;
 	}
-	public void moveAllPoints(double x_coordinate, double y_coordinate) {
+	public void Move(double x_offset, double y_offset) {
 		Point[] all_points = getAllPoints();
 		int i = 0;
 		double x_value, y_value;
 		for (i = 0; i < all_points.length; i++) {
 			x_value = all_points[i].getX();
 			y_value = all_points[i].getY();
-			all_points[i].setPoint(x_value + x_coordinate, y_value + y_coordinate);
+			vertex[i].setPoint(x_value + x_offset, y_value + y_offset);
 		}
+	}
+	public Triangle Clone() {
+		Triangle clone = new Triangle(color, vertex[0].getX(), vertex[0].getY(), vertex[1].getX(), vertex[1].getY(),
+				vertex[2].getX(), vertex[2].getY());
+		return clone;
 	}
 	public double getArea() {
 		Point[] all_points = getAllPoints();
@@ -36,7 +41,7 @@ public class Triangle extends Shape {
 	public double getCircumference() {
 		return first_edge_length + second_edge_length + third_edge_length;
 	}
-	public int isPointInside(double x_coordinate, double y_coordinate) {
+	public boolean isPointInside(double x_coordinate, double y_coordinate) {
 		Point checked_point = new Point(x_coordinate, y_coordinate);
 		Point[] all_points = getAllPoints();
 		return isPointInsideTriangle(checked_point, all_points[0], all_points[1], all_points[2]);
@@ -50,7 +55,8 @@ public class Triangle extends Shape {
 		return Math.sqrt(s * (s - first_second_distance) * (s - first_third_distance) * (s - second_third_distance));
 	}
 
-	public static int isPointInsideTriangle(Point checked_point, Point first_point, Point second_point, Point third_point) {
+	public static boolean isPointInsideTriangle(Point checked_point, Point first_point, Point second_point,
+			Point third_point) {
 		double first_sub_area_with_checked_point = triangleArea(first_point, second_point, checked_point);
 		double second_sub_area_with_checked_point = triangleArea(first_point, checked_point, third_point);
 		double third_sub_area_with_checked_point = triangleArea(checked_point, second_point, third_point);
@@ -60,8 +66,8 @@ public class Triangle extends Shape {
 		double triangle_area = triangleArea(first_point, second_point, third_point);
 		if (area_sum_with_checked_point >= triangle_area - EPSILON &&
 			area_sum_with_checked_point <= triangle_area + EPSILON) {
-			return 1;
+			return true;
 		}
-		return 0;
+		return false;
 	}
 }

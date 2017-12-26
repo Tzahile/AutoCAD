@@ -25,15 +25,20 @@ public class Parallelogram extends Shape {
 	public Point[] getAllPoints() {
 		return this.vertex;
 	}
-	public void moveAllPoints(double x_coordinate, double y_coordinate) {
+	public void Move(double x_offset, double y_offset) {
 		Point[] all_points = getAllPoints();
 		int i = 0;
 		double x_value, y_value;
 		for (i = 0; i < all_points.length; i++) {
 			x_value = all_points[i].getX();
 			y_value = all_points[i].getY();
-			all_points[i].setPoint(x_value + x_coordinate, y_value + y_coordinate);
+			vertex[i].setPoint(x_value + x_offset, y_value + y_offset);
 		}
+	}
+	public Parallelogram Clone() {
+		Parallelogram clone = new Parallelogram(color, vertex[0].getX(), vertex[0].getY(),
+				vertex[1].getX(), vertex[1].getY(), vertex[2].getX(), vertex[2].getY());
+		return clone;
 	}
 	public double getArea() {
 		double[][] matrix_to_calculate_det = new double[2][2];
@@ -54,13 +59,13 @@ public class Parallelogram extends Shape {
 	public int getID() {
 		return this.ID;
 	}
-	public int isPointInside(double x_coordinate, double y_coordinate) {
+	public boolean isPointInside(double x_coordinate, double y_coordinate) {
 		Point checked_point = new Point(x_coordinate, y_coordinate);
 		Point[] all_points = getAllPoints();
-		if (Triangle.isPointInsideTriangle(checked_point, all_points[0], all_points[1], all_points[2]) == 1 ||
-			Triangle.isPointInsideTriangle(checked_point, all_points[0], all_points[3], all_points[2]) == 1) {
-			return 1;
+		if (Triangle.isPointInsideTriangle(checked_point, all_points[0], all_points[1], all_points[2]) == true ||
+			Triangle.isPointInsideTriangle(checked_point, all_points[0], all_points[3], all_points[2]) == true) {
+			return true;
 		}
-		return 0;
+		return false;
 	}
 }
