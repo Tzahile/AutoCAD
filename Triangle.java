@@ -63,7 +63,7 @@ public class Triangle extends Shape
 		return isPointInsideTriangle(checked_point, all_points[0], all_points[1], all_points[2]);
 	}
 
-	private static double triangleArea(Point first_point, Point second_point, Point third_point)
+	public static double triangleArea(Point first_point, Point second_point, Point third_point)
 	{
 		double first_second_distance = first_point.distanceTo(second_point);
 		double first_third_distance = first_point.distanceTo(third_point);
