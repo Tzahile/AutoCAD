@@ -12,7 +12,7 @@ public class Circle extends Ellipse
 	
 	public Circle Clone()
 	{
-		Circle clone = new Circle(color, focus[0].getX(), focus[0].getY(), distance/2);
+		Circle clone = new Circle(this.getColor(), focus[0].getX(), focus[0].getY(), distance/2);
 		return clone;
 	}
 }

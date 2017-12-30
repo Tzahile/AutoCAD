@@ -9,7 +9,7 @@ public class Rectangle extends Parallelogram
 	
 	public Rectangle Clone()
 	{
-		Rectangle clone = new Rectangle(color, vertex[0].getX(), vertex[0].getY(), vertex[2].getX(), vertex[2].getY());
+		Rectangle clone = new Rectangle(this.getColor(), vertex[0].getX(), vertex[0].getY(), vertex[2].getX(), vertex[2].getY());
 		return clone;
 	}
 }

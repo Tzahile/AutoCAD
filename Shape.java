@@ -2,7 +2,7 @@ public abstract class Shape
 {
 	private static int object_counter = 0;
 	private int ID;
-	protected Color color;
+	private Color color;
 	public abstract Point[] getAllPoints();
 	public abstract double getArea();
 	public abstract double getCircumference();

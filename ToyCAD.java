@@ -6,7 +6,9 @@ import java.lang.reflect.*;
 public class ToyCAD
 {
     private static final int SUCCESS = 0;
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
+    IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+    SecurityException
     {
         HashMap < Integer, Shape > shapes_hash_table = new HashMap < Integer, Shape > ();
         Scanner scan = new Scanner(System.in);
@@ -66,29 +68,25 @@ public class ToyCAD
         return parsedLine;
     }
     
-	private static void NewCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	private static void NewCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table) 
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException
     {   
 		Object invoked_method = null;
 		
-		//Color color = Color.valueOf(parsed_line[2].toUpperCase());
         Class<? extends Shape> reflected_class = Class.forName(Capitalize(parsed_line[1])).asSubclass(Shape.class);
         Constructor<?>[] reflected_constructor = reflected_class.getDeclaredConstructors();
     	double[] args = StringArraySliceToDoubleArray(parsed_line, 3, parsed_line.length);
     	Object[] Oargs = new Object[args.length+1];
     	Oargs[0] = Color.valueOf(parsed_line[2].toUpperCase());
-    	for(int i = 0; i< args.length; i++) {
+    	for(int i = 0; i < args.length; i++) {
     		Oargs[i+1] = Double.valueOf(args[i]);
     	}
     	Object reflected_object= reflected_constructor[0].newInstance(Oargs);
     	Method reflected_method = reflected_class.getMethod("getID");
 		invoked_method = reflected_method.invoke(reflected_object);
-	    
-		try {
-	    	shapes_hash_table.put((Integer)invoked_method, (Shape)reflected_object);
-	    	System.out.println(invoked_method);
-	    } catch (Exception e) {
-	    	System.out.println("Couldn't get shape's ID");
-	    }
+	    shapes_hash_table.put((Integer)invoked_method, (Shape)reflected_object);
+	    System.out.println(invoked_method);
     }
     
     private static void DeleteCommand(int ID, HashMap < Integer, Shape > shapes_hash_table)
@@ -119,14 +117,14 @@ public class ToyCAD
         for (Integer key: shapes_hash_table.keySet())
         {
             Shape current_shape = shapes_hash_table.get(key);
-            if (current_shape.color == color) {
+            if (current_shape.getColor() == color) {
                 total_area += current_shape.getArea();
             }
         }
         System.out.println(String.format("%.2f", total_area));
     }
     
-    public static void isInsideCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table)
+    private static void isInsideCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table)
     {
         int ID = StrToInt(parsed_line[1]);
         boolean is_inside = false;
@@ -155,7 +153,7 @@ public class ToyCAD
         for (Integer key: shapes_hash_table.keySet())
         {
             Shape current_shape = shapes_hash_table.get(key);
-            if (current_shape.color == color)
+            if (current_shape.getColor() == color)
             {
             	total_circumference += current_shape.getCircumference();
             }
@@ -168,7 +166,7 @@ public class ToyCAD
     private static double StrToDouble(String string) {
     	return Double.parseDouble(string);
     }
-    private static double[] StrArrayToDoubleArray(String... string_array)
+    private static double[] StrArrayToDoubleArray(String[] string_array)
     {
     	double[] double_array = Arrays.stream(string_array).mapToDouble(Double::parseDouble).toArray();
     	return  double_array;

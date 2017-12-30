@@ -21,7 +21,6 @@ public class Triangle extends Shape
 		third_edge_length = vertex[1].distanceTo(vertex[2]);
 	}
 	
-	
 	public Point[] getAllPoints()
 	{
 		return this.vertex;
@@ -42,7 +41,7 @@ public class Triangle extends Shape
 	
 	public Triangle Clone()
 	{
-		Triangle clone = new Triangle(color, vertex[0].getX(), vertex[0].getY(), vertex[1].getX(), vertex[1].getY(),
+		Triangle clone = new Triangle(this.getColor(), vertex[0].getX(), vertex[0].getY(), vertex[1].getX(), vertex[1].getY(),
 				vertex[2].getX(), vertex[2].getY());
 		return clone;
 	}
@@ -64,7 +63,7 @@ public class Triangle extends Shape
 		return isPointInsideTriangle(checked_point, all_points[0], all_points[1], all_points[2]);
 	}
 
-	public static double triangleArea(Point first_point, Point second_point, Point third_point)
+	private static double triangleArea(Point first_point, Point second_point, Point third_point)
 	{
 		double first_second_distance = first_point.distanceTo(second_point);
 		double first_third_distance = first_point.distanceTo(third_point);

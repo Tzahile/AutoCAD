@@ -49,7 +49,7 @@ public class Parallelogram extends Shape
 	
 	public Parallelogram Clone()
 	{
-		Parallelogram clone = new Parallelogram(color, vertex[0].getX(), vertex[0].getY(),
+		Parallelogram clone = new Parallelogram(this.getColor(), vertex[0].getX(), vertex[0].getY(),
 				vertex[1].getX(), vertex[1].getY(), vertex[2].getX(), vertex[2].getY());
 		return clone;
 	}

@@ -37,7 +37,7 @@ public class Ellipse extends Shape
 	
 	public Ellipse Clone()
 	{
-		Ellipse clone = new Ellipse(color, focus[0].getX(), focus[0].getY(), focus[1].getX(), focus[1].getY(),
+		Ellipse clone = new Ellipse(this.getColor(), focus[0].getX(), focus[0].getY(), focus[1].getX(), focus[1].getY(),
 				distance);
 		return clone;
 	}
