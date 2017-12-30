@@ -1,10 +1,12 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.lang.reflect.*;
 
 public class ToyCAD
 {
     private static final int SUCCESS = 0;
-    public static void main(String[] args)
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
     {
         HashMap < Integer, Shape > shapes_hash_table = new HashMap < Integer, Shape > ();
         Scanner scan = new Scanner(System.in);
@@ -18,14 +20,14 @@ public class ToyCAD
                     NewCommand(parsed_line, shapes_hash_table);
                     break;
                 case "delete":
-                    DeleteCommand(Integer.parseInt(parsed_line[1]), shapes_hash_table);
+                    DeleteCommand(StrToInt(parsed_line[1]), shapes_hash_table);
                     break;
                 case "move":
-                    MoveCommand(Integer.parseInt(parsed_line[1]), StrToDouble(parsed_line[2]),
+                    MoveCommand(StrToInt(parsed_line[1]), StrToDouble(parsed_line[2]),
                     		StrToDouble(parsed_line[3]), shapes_hash_table);
                     break;
                 case "copy":
-                    CopyCommand(Integer.parseInt(parsed_line[1]), StrToDouble(parsed_line[2]),
+                    CopyCommand(StrToInt(parsed_line[1]), StrToDouble(parsed_line[2]),
                     		StrToDouble(parsed_line[3]), shapes_hash_table);
                     break;
                 case "area":
@@ -34,7 +36,7 @@ public class ToyCAD
                     break;
                 case "color":
                     parsed_line[1] = parsed_line[1].toUpperCase();
-                    ColorCommand(Integer.parseInt(parsed_line[2]), Color.valueOf(parsed_line[1]), shapes_hash_table);
+                    ColorCommand(StrToInt(parsed_line[2]), Color.valueOf(parsed_line[1]), shapes_hash_table);
                     break;
                 case "circumference":
                     parsed_line[1] = parsed_line[1].toUpperCase();
@@ -64,43 +66,29 @@ public class ToyCAD
         return parsedLine;
     }
     
-    private static void NewCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table)
-    {
-        Shape new_shape;
-        Color color = Color.valueOf(parsed_line[2].toUpperCase());
-        switch (parsed_line[1])
-        {
-            case "parallelogram":
-                new_shape = new Parallelogram(color, StrToDouble(parsed_line[3]), StrToDouble(parsed_line[4]),
-                    StrToDouble(parsed_line[5]), StrToDouble(parsed_line[6]), StrToDouble(parsed_line[7]), 
-                    StrToDouble(parsed_line[8]));
-                break;
-            case "rectangle":
-                new_shape = new Rectangle(color, StrToDouble(parsed_line[3]), StrToDouble(parsed_line[4]),
-                    StrToDouble(parsed_line[5]), StrToDouble(parsed_line[6]));
-                break;
-            case "square":
-                new_shape = new Square(color, StrToDouble(parsed_line[3]), StrToDouble(parsed_line[4]),
-                    StrToDouble(parsed_line[5]));
-                break;
-            case "triangle":
-                new_shape = new Triangle(color, StrToDouble(parsed_line[3]), StrToDouble(parsed_line[4]),
-                    StrToDouble(parsed_line[5]), StrToDouble(parsed_line[6]), StrToDouble(parsed_line[7]),
-                    StrToDouble(parsed_line[8]));
-                break;
-            case "ellipse":
-                new_shape = new Ellipse(color, StrToDouble(parsed_line[3]), StrToDouble(parsed_line[4]),
-                    StrToDouble(parsed_line[5]), StrToDouble(parsed_line[6]), StrToDouble(parsed_line[7]));
-                break;
-            case "circle":
-                new_shape = new Circle(color, StrToDouble(parsed_line[3]), StrToDouble(parsed_line[4]),
-                    StrToDouble(parsed_line[5]));
-                break;
-            default:
-            	return;
-        }
-        shapes_hash_table.put(new_shape.ID, new_shape);
-        System.out.println(new_shape.ID);
+	private static void NewCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+    {   
+		Object invoked_method = null;
+		
+		//Color color = Color.valueOf(parsed_line[2].toUpperCase());
+        Class<? extends Shape> reflected_class = Class.forName(Capitalize(parsed_line[1])).asSubclass(Shape.class);
+        Constructor<?>[] reflected_constructor = reflected_class.getDeclaredConstructors();
+    	double[] args = StringArraySliceToDoubleArray(parsed_line, 3, parsed_line.length);
+    	Object[] Oargs = new Object[args.length+1];
+    	Oargs[0] = Color.valueOf(parsed_line[2].toUpperCase());
+    	for(int i = 0; i< args.length; i++) {
+    		Oargs[i+1] = Double.valueOf(args[i]);
+    	}
+    	Object reflected_object= reflected_constructor[0].newInstance(Oargs);
+    	Method reflected_method = reflected_class.getMethod("getID");
+		invoked_method = reflected_method.invoke(reflected_object);
+	    
+		try {
+	    	shapes_hash_table.put((Integer)invoked_method, (Shape)reflected_object);
+	    	System.out.println(invoked_method);
+	    } catch (Exception e) {
+	    	System.out.println("Couldn't get shape's ID");
+	    }
     }
     
     private static void DeleteCommand(int ID, HashMap < Integer, Shape > shapes_hash_table)
@@ -114,15 +102,15 @@ public class ToyCAD
     	Shape current_shape = shapes_hash_table.get(ID);
     	current_shape.Move(x_offset, y_offset);
     }
-    
+
     private static void CopyCommand(int ID, double x_offset, double y_offset, 
     		HashMap < Integer, Shape > shapes_hash_table)
     {
     	Shape current_shape = shapes_hash_table.get(ID);
     	Shape clone = current_shape.Clone();
     	clone.Move(x_offset, y_offset);
-    	shapes_hash_table.put(clone.ID, clone);
-    	System.out.println(clone.ID);
+    	shapes_hash_table.put(clone.getID(), clone);
+    	System.out.println(clone.getID());
     }
     
     private static void AreaCommand(Color color, HashMap < Integer, Shape > shapes_hash_table)
@@ -140,7 +128,7 @@ public class ToyCAD
     
     public static void isInsideCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table)
     {
-        int ID = Integer.parseInt(parsed_line[1]);
+        int ID = StrToInt(parsed_line[1]);
         boolean is_inside = false;
         double x_coordinate = StrToDouble(parsed_line[2]);
         double y_coordinate = StrToDouble(parsed_line[3]);
@@ -174,9 +162,25 @@ public class ToyCAD
         }
         System.out.println(String.format("%.2f", total_circumference));
     }
-    
-    private static double StrToDouble(String string)
+    private static int StrToInt(String string) {
+    	return Integer.parseInt(string);
+    }
+    private static double StrToDouble(String string) {
+    	return Double.parseDouble(string);
+    }
+    private static double[] StrArrayToDoubleArray(String... string_array)
     {
-        return Double.parseDouble(string);
+    	double[] double_array = Arrays.stream(string_array).mapToDouble(Double::parseDouble).toArray();
+    	return  double_array;
+    }
+    private static double[] StringArraySliceToDoubleArray(String[] string_array, int start, int end){
+    	String[] trimmed_parsed_line = Arrays.copyOfRange(string_array, start, end);
+    	double[] double_array = StrArrayToDoubleArray(trimmed_parsed_line);
+    	return double_array;
+    }
+    private static String Capitalize(String string){
+        String mystring = string.substring(0, 1).toUpperCase() + string.substring(1);
+        return mystring;
     }
 }
+	

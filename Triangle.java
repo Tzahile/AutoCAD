@@ -21,6 +21,7 @@ public class Triangle extends Shape
 		third_edge_length = vertex[1].distanceTo(vertex[2]);
 	}
 	
+	
 	public Point[] getAllPoints()
 	{
 		return this.vertex;

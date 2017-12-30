@@ -74,11 +74,6 @@ public class Parallelogram extends Shape
 		return 2 * first_edge_length + 2 * second_edge_length;
 	}
 	
-	public int getID()
-	{
-		return this.ID;
-	}
-	
 	public boolean isPointInside(double x_coordinate, double y_coordinate)
 	{
 		Point checked_point = new Point(x_coordinate, y_coordinate);

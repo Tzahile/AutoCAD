@@ -1,7 +1,7 @@
 public abstract class Shape
 {
 	private static int object_counter = 0;
-	protected int ID;
+	private int ID;
 	protected Color color;
 	public abstract Point[] getAllPoints();
 	public abstract double getArea();
@@ -14,6 +14,11 @@ public abstract class Shape
 		ID = object_counter;
 		object_counter++;
 		this.color = color;
+	}
+	
+	public int getID()
+	{
+		return this.ID;
 	}
 	
 	public Color getColor()

@@ -12,11 +12,6 @@ public class Ellipse extends Shape
 		this.distance = distance;
 	}
 	
-	public int getID()
-	{
-		return this.ID;
-	}
-	
 	public Point[] getAllPoints()
 	{
 		return this.focus;
