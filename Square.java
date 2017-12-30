@@ -6,7 +6,8 @@ public class Square extends Rectangle
 		CalculateRemainingVertex();
 	}
 	
-	public Square Clone() {
+	public Square Clone()
+	{
 		Square clone = new Square(this.getColor(), vertex[0].getX() + first_edge_length/2,
 				vertex[0].getY() - first_edge_length / 2, first_edge_length);
 		return clone;

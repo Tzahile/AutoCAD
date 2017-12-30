@@ -41,8 +41,8 @@ public class Triangle extends Shape
 	
 	public Triangle Clone()
 	{
-		Triangle clone = new Triangle(this.getColor(), vertex[0].getX(), vertex[0].getY(), vertex[1].getX(), vertex[1].getY(),
-				vertex[2].getX(), vertex[2].getY());
+		Triangle clone = new Triangle(this.getColor(), vertex[0].getX(), vertex[0].getY(), vertex[1].getX(),
+				vertex[1].getY(), vertex[2].getX(), vertex[2].getY());
 		return clone;
 	}
 	

@@ -72,21 +72,20 @@ public class ToyCAD
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException
     {   
-		Object invoked_method = null;
-		
         Class<? extends Shape> reflected_class = Class.forName(Capitalize(parsed_line[1])).asSubclass(Shape.class);
         Constructor<?>[] reflected_constructor = reflected_class.getDeclaredConstructors();
-    	double[] args = StringArraySliceToDoubleArray(parsed_line, 3, parsed_line.length);
-    	Object[] Oargs = new Object[args.length+1];
-    	Oargs[0] = Color.valueOf(parsed_line[2].toUpperCase());
-    	for(int i = 0; i < args.length; i++) {
-    		Oargs[i+1] = Double.valueOf(args[i]);
+    	double[] sliced_double_parsed_line = StringArraySliceToDoubleArray(parsed_line, 3, parsed_line.length);
+    	Object[] object_args = new Object[sliced_double_parsed_line.length+1];
+    	object_args[0] = Color.valueOf(parsed_line[2].toUpperCase());
+    	for (int i = 0; i < sliced_double_parsed_line.length; i++)
+    	{
+    		object_args[i+1] = Double.valueOf(sliced_double_parsed_line[i]);
     	}
-    	Object reflected_object= reflected_constructor[0].newInstance(Oargs);
+    	Object reflected_object = reflected_constructor[0].newInstance(object_args);
     	Method reflected_method = reflected_class.getMethod("getID");
-		invoked_method = reflected_method.invoke(reflected_object);
-	    shapes_hash_table.put((Integer)invoked_method, (Shape)reflected_object);
-	    System.out.println(invoked_method);
+		Object invoked_method_result = reflected_method.invoke(reflected_object);
+	    shapes_hash_table.put((Integer)invoked_method_result, (Shape)reflected_object);
+	    System.out.println(invoked_method_result);
     }
     
     private static void DeleteCommand(int ID, HashMap < Integer, Shape > shapes_hash_table)
@@ -160,23 +159,32 @@ public class ToyCAD
         }
         System.out.println(String.format("%.2f", total_circumference));
     }
-    private static int StrToInt(String string) {
+    
+    private static int StrToInt(String string)
+    {
     	return Integer.parseInt(string);
     }
-    private static double StrToDouble(String string) {
+    
+    private static double StrToDouble(String string)
+    {
     	return Double.parseDouble(string);
     }
+    
     private static double[] StrArrayToDoubleArray(String[] string_array)
     {
     	double[] double_array = Arrays.stream(string_array).mapToDouble(Double::parseDouble).toArray();
     	return  double_array;
     }
-    private static double[] StringArraySliceToDoubleArray(String[] string_array, int start, int end){
+    
+    private static double[] StringArraySliceToDoubleArray(String[] string_array, int start, int end)
+    {
     	String[] trimmed_parsed_line = Arrays.copyOfRange(string_array, start, end);
     	double[] double_array = StrArrayToDoubleArray(trimmed_parsed_line);
     	return double_array;
     }
-    private static String Capitalize(String string){
+    
+    private static String Capitalize(String string)
+    {
         String mystring = string.substring(0, 1).toUpperCase() + string.substring(1);
         return mystring;
     }
