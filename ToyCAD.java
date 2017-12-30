@@ -53,7 +53,7 @@ public class ToyCAD
             }
         }
     }
-    
+
     private static String GetLineFromUser(Scanner scan)
     {
         String input_string = "";
@@ -61,17 +61,17 @@ public class ToyCAD
         input_string = input_string.toLowerCase();
         return input_string;
     }
-    
+
     private static String[] ParseLine(String line)
     {
         String[] parsedLine = line.split(" ");
         return parsedLine;
     }
-    
-	private static void NewCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table) 
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException
-    {   
+
+    private static void NewCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table) 
+		throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+		InvocationTargetException, NoSuchMethodException, SecurityException
+    {
         Class<? extends Shape> reflected_class = Class.forName(Capitalize(parsed_line[1])).asSubclass(Shape.class);
         Constructor<?>[] reflected_constructor = reflected_class.getDeclaredConstructors();
     	double[] sliced_double_parsed_line = StringArraySliceToDoubleArray(parsed_line, 3, parsed_line.length);
@@ -83,16 +83,16 @@ public class ToyCAD
     	}
     	Object reflected_object = reflected_constructor[0].newInstance(object_args);
     	Method reflected_method = reflected_class.getMethod("getID");
-		Object invoked_method_result = reflected_method.invoke(reflected_object);
-	    shapes_hash_table.put((Integer)invoked_method_result, (Shape)reflected_object);
-	    System.out.println(invoked_method_result);
+	Object invoked_method_result = reflected_method.invoke(reflected_object);
+        shapes_hash_table.put((Integer)invoked_method_result, (Shape)reflected_object);
+        System.out.println(invoked_method_result);
     }
-    
+
     private static void DeleteCommand(int ID, HashMap < Integer, Shape > shapes_hash_table)
     {
         shapes_hash_table.remove(ID);
     }
-    
+
     private static void MoveCommand(int ID, double x_offset, double y_offset, 
     		HashMap < Integer, Shape > shapes_hash_table)
     {
@@ -109,7 +109,7 @@ public class ToyCAD
     	shapes_hash_table.put(clone.getID(), clone);
     	System.out.println(clone.getID());
     }
-    
+
     private static void AreaCommand(Color color, HashMap < Integer, Shape > shapes_hash_table)
     {
         double total_area = 0;
@@ -122,7 +122,7 @@ public class ToyCAD
         }
         System.out.println(String.format("%.2f", total_area));
     }
-    
+
     private static void isInsideCommand(String[] parsed_line, HashMap < Integer, Shape > shapes_hash_table)
     {
         int ID = StrToInt(parsed_line[1]);
